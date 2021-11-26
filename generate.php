@@ -2,12 +2,21 @@
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get file from form and upload it to server
     $file = $_FILES['file'];
+
+
+    $extension = pathinfo($file['name'])['extension'];
+    if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
+        exit;
+        die();
+    }
+
     $upload_dir = '/var/www/thomasdl/ascii/';
     $upload_file = $upload_dir . basename($file['name']);
     if (move_uploaded_file($file['tmp_name'], $upload_file)) {
         //echo "File is valid, and was successfully uploaded.\n";
     } else {
-        //echo "Possible file upload attack!\n";
+        exit;
+        die();
     }
     
     $size = $_POST['size'];
